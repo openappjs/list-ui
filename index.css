@@ -1,0 +1,26 @@
+.ui.list {
+  display: inline-block;
+}
+.ui.list > .controls {
+  display: block;
+}
+.ui.list > .list {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+.ui.list > .list > .item {
+  white-space: nowrap;
+  position: relative;
+  flex: 0 1 auto;
+}
+
+@supports(display: flex) {
+  .ui.list > .list {
+    display: flex;
+  }
+  .ui.list > .list > .item {
+    display: block;
+  }
+}

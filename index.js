@@ -22,8 +22,8 @@ function List (options) {
       cell: mercury.value(style.cell || {}),
     }),
     config: mercury.struct({
-      debug: mercury.value(options.config.debug || false),
-      debugToggle: mercury.value(options.config.debugToggle || false),
+      debug: mercury.value(config.debug || false),
+      debugToggle: mercury.value(config.debugToggle || false),
       itemSize: mercury.struct({
         x: config.itemSize && config.itemSize.x || config.itemSize || undefined,
         y: config.itemSize && config.itemSize.y || config.itemSize || undefined,

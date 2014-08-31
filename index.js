@@ -25,8 +25,8 @@ function List (options) {
       debug: mercury.value(options.config.debug || false),
       debugToggle: mercury.value(options.config.debugToggle || false),
       itemSize: mercury.struct({
-        x: config.itemSize && config.itemSize.x || config.itemSize || 80,
-        y: config.itemSize && config.itemSize.y || config.itemSize || 80,
+        x: config.itemSize && config.itemSize.x || config.itemSize || undefined,
+        y: config.itemSize && config.itemSize.y || config.itemSize || undefined,
       }),
     }),
     events: events,
@@ -58,6 +58,9 @@ List.render = function (state, events) {
 
   debug("rendering list", list);
 
+  var config = state.config;
+  var itemSize = config.itemSize;
+
   return h('div.list.ui', {
     style: state.style.ui,
   }, [
@@ -76,8 +79,8 @@ List.render = function (state, events) {
     }, list.map(function (item) {
       return h('li.item', {
         style: extend({
-          width: state.config.itemSize.x + "px",
-          height: state.config.itemSize.y + "px",
+          width: itemSize.x && (itemSize.x + "px") || undefined,
+          height: itemSize.y && (itemSize.y + "px") || undefined,
         }, state.style.item),
       }, item)
     }))

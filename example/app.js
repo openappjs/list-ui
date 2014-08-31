@@ -12,8 +12,7 @@ require('../index.css');
 var Item = require('./item');
 require('./item.css');
 
-var shape = [4, 4];
-var numItems = shape[0] * shape[1];
+var numItems = 16;
 
 // setup colors
 var colors = [];

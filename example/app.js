@@ -41,8 +41,8 @@ var list = List({
     debug: true,
     debugToggle: true,
     itemSize: {
-      x: 80,
-      y: 80,
+      x: undefined,
+      y: undefined,
     },
   },
 });

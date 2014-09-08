@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "examples": "exampler-develop",
+    "examples-publish": "exampler-build && exampler-publish",
     "test": "node test/index.js | tap-spec",
     "travis-test": "npm run phantom && npm run cover && istanbul report lcov && ((cat coverage/lcov.info | coveralls) || exit 0)",
     "phantom": "run-browser test/index.js -b | tap-spec",

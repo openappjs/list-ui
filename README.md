@@ -20,7 +20,7 @@ npm i --save list-ui
 
 ## example
 
-`npm run example` to run an [an example app](./example/app.js).
+`npm run examples` to run [example apps](./examples).
 
 ## license
 

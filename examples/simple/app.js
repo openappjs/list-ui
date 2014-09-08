@@ -1,12 +1,12 @@
 var mercury = require('mercury');
 
-var List = require('../');
+var List = require('../../');
 
 // include app styling
 require('./app.css');
 
 // include list-ui styling
-require('../index.css');
+require('../../index.css');
 
 // include item component and styling
 var Item = require('./item');

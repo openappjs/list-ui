@@ -4,7 +4,7 @@
   "description": "list user interface",
   "main": "index.js",
   "scripts": {
-    "example": "beefy -d -p 5000 example/app.js",
+    "examples": "exampler-develop",
     "test": "node test/index.js | tap-spec",
     "travis-test": "npm run phantom && npm run cover && istanbul report lcov && ((cat coverage/lcov.info | coveralls) || exit 0)",
     "phantom": "run-browser test/index.js -b | tap-spec",
@@ -62,10 +62,10 @@
     "xtend": "^4.0.0"
   },
   "devDependencies": {
-    "beefy": "^2.1.0",
     "coveralls": "^2.11.1",
     "cssify": "^0.5.1",
     "envify": "^2.0.1",
+    "exampler": "^0.1.1",
     "istanbul": "^0.3.0",
     "ndarray": "^1.0.15",
     "raf": "^2.0.2",

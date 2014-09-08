@@ -3,7 +3,7 @@ var mercury = require('mercury');
 var List = require('../../');
 
 // include app styling
-require('./app.css');
+require('./index.css');
 
 // include list-ui styling
 require('../../index.css');

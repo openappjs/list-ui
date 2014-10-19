@@ -9,16 +9,23 @@ var insertCss = require('insert-css');
 var cfs = require('css-face-string');
 var domready = require('domready');
 var Aviator = require('aviator');
+var _ = require('lodash');
+
+var data;
 
 //pull data
-var people = [
+var files = [
   fs.readFileSync('./examples/persons/craftodex-data/people/mikey.yml', {encoding: 'utf8'}),
   fs.readFileSync('./examples/persons/craftodex-data/people/simon.yml', {encoding: 'utf8'})
-]
+];
 
-people = people.map(function(p) {
-  return yaml.load(p);
+data = files.map(function(p) {
+  var obj = yaml.load(p);
+  obj.id = obj['@id']
+  delete obj['@id'];
+  return obj
 });
+
 
 //insert styles and fonts
 var fontAwesome = cfs.file({
@@ -57,21 +64,56 @@ var icon = Icon({
 }).state;
 
 // define simple routing 
-
 PersonTarget = {
   profile: function (req) {
     console.log(req)
     var id = req.params.id
-    if (id !== 'persons') {
-    var elem = document.getElementById('list-ui');
-    if (elem) elem.remove();
-      people.forEach(function(p) {
-        console.log(p);
-      })
+
+    var person = _.find(data, function(d){ return d.id.indexOf(id) >= 0 });
+    console.log('person', person)
+    if (person) {
+      var profile = {
+        model: person,
+        commands: [],
+        styleController: require('./styles'),
+        view: 'profile'
+      };
+
+      console.log('profile', profile);
+
+      var personUi = PersonUI(profile)
+      var elems = document.getElementsByClassName('ui');
+      if (elems.length > 0) {
+        for (var i=0;i<elems.length;i++) {
+          var elem = elems.item(i);
+          elem.remove();
+        }
+      }
+
+      mercury.app(document.body, personUi.state, PersonUI.render)
+
+
+
     }
+
   },
-  show: function (req) {
-    console.log('show', req)
+  ui: function (req) {
+    if (req.params.id) return;
+
+    var elems = document.getElementsByClassName('ui');
+    if (elems.length > 0) {
+      for (var i=0;i<elems.length;i++) {
+        var elem = elems.item(i);
+        elem.remove();
+      }
+    }
+    console.log('ui', req, list);
+
+    //rerender list
+    if (list) {
+      mercury.app(document.body, list.state, List.render);
+    }
+
   }
 
 }
@@ -82,6 +124,7 @@ Aviator.root = "/persons"
 Aviator.setRoutes({
   '/*': {
     target: PersonTarget,
+    '/*': 'ui',
     '/:id': {
       '/*': 'profile'
     }
@@ -96,9 +139,9 @@ function click (options) {
   Aviator.navigate(id)
 }
 
-people = people.map(function(p) {
-  p.id = p["@id"];
-  delete p["@id"];
+
+
+personUis = data.map(function(p) {
   return {
     model: p,
     children: [icon],
@@ -110,12 +153,12 @@ people = people.map(function(p) {
   }
 })
 
-people = people.map(function(p) {
+personUis = personUis.map(function(p) {
   return PersonUI(p).state;
 })
 
 var list = List({
-  children: people,
+  children: personUis,
   style: {
     ui: {
       width: '100%'

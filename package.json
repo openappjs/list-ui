@@ -76,6 +76,7 @@
     "font-icon-ui": "git://github.com/openappjs/font-icon-ui",
     "insert-css": "^0.2.0",
     "istanbul": "^0.3.0",
+    "lodash": "^2.4.1",
     "ndarray": "^1.0.15",
     "person-ui": "git://github.com/openappjs/person-ui#routing",
     "raf": "^2.0.2",

@@ -8,7 +8,7 @@ module.exports = function (parent, view) {
   };
 
   //element query logic
-  if (width < 2000 && height < 1000 && view === 'list-item') {
+  if (view === 'list-item') {
     return styleObj.listItemMobile;
   } else {
     return styleObj.profileDesktop;

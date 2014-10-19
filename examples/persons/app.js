@@ -1,3 +1,5 @@
+var mercury = require('mercury');
+
 var List = require('../../');
 var PersonUI = require('person-ui');
 var Icon = require('font-icon-ui');
@@ -5,6 +7,7 @@ var yaml = require('yaml-js');
 var fs = require('fs');
 var insertCss = require('insert-css');
 var cfs = require('css-face-string');
+var domready = require('domready');
 
 
 //pull data
@@ -21,13 +24,17 @@ people = people.map(function(p) {
 var fontAwesome = cfs.file({
   name: 'icons',
   files: [
-    {url: 'node_modules/font-awesome/fonts/fontawesome-webfont.eot', format: 'eot'},
-    {url: 'node_modules/font-awesome/fonts/fontawesome-webfont.svg', format: 'svg'},
-    {url: 'node_modules/font-awesome/fonts/fontawesome-webfont.ttf', format: 'ttf'},
-    {url: 'node_modules/font-awesome/fonts/fontawesome-webfont.woff', format: 'woff'},
+    {url: './persons/fonts/fontawesome-webfont.eot', format: 'eot'},
+    {url: './persons/fonts/fontawesome-webfont.svg', format: 'svg'},
+    {url: './persons/fonts/fontawesome-webfont.ttf', format: 'ttf'},
+    {url: './persons/fonts/fontawesome-webfont.woff', format: 'woff'},
   ]
 });
-insertCss(fontAwesome)
+insertCss(fontAwesome);
+var css1 = fs.readFileSync('./index.css');
+var css2 = fs.readFileSync('./examples/persons/index.css');
+insertCss(css1);
+insertCss(css2);
 
 //bootstrap child component
 var icon = Icon({
@@ -50,6 +57,8 @@ var icon = Icon({
 }).state;
 
 people = people.map(function(p) {
+  p.id = p["@id"];
+  delete p["@id"];
   return {
     model: p,
     children: [icon],
@@ -59,17 +68,25 @@ people = people.map(function(p) {
 })
 
 
-
 people = people.map(function(p) {
   return PersonUI(p).state;
 })
 
 var list = List({
-  model: people,
+  children: people,
   style: {
-    list: {
-      backgroundColor: 'green',
+    ui: {
+      width: '100%'
     },
+    list: {
+      'list-style-type': 'none'
+    },
+    debug: {
+      display: 'none'
+    },
+    controls: {
+      display: 'none'
+    }
   },
   config: {
     debug: true,
@@ -80,3 +97,12 @@ var list = List({
     },
   },
 });
+
+domready(function() {
+
+  //render app on body, trigger re-render on state change
+  mercury.app(document.body, list.state, List.render);
+
+
+
+})

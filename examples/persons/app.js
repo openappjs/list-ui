@@ -8,7 +8,7 @@ var fs = require('fs');
 var insertCss = require('insert-css');
 var cfs = require('css-face-string');
 var domready = require('domready');
-
+var Aviator = require('aviator');
 
 //pull data
 var people = [
@@ -56,17 +56,59 @@ var icon = Icon({
   }
 }).state;
 
+// define simple routing 
+
+PersonTarget = {
+  profile: function (req) {
+    console.log(req)
+    var id = req.params.id
+    if (id !== 'persons') {
+    var elem = document.getElementById('list-ui');
+    if (elem) elem.remove();
+      people.forEach(function(p) {
+        console.log(p);
+      })
+    }
+  },
+  show: function (req) {
+    console.log('show', req)
+  }
+
+}
+
+
+Aviator.pushStateEnabled = true;
+Aviator.root = "/persons"
+Aviator.setRoutes({
+  '/*': {
+    target: PersonTarget,
+    '/:id': {
+      '/*': 'profile'
+    }
+    }
+});
+
+Aviator.dispatch();
+
+function click (options) {
+  console.log('list-item clicked', options)
+  var id = '/' + options.id.split('/').slice(-1)[0];
+  Aviator.navigate(id)
+}
+
 people = people.map(function(p) {
   p.id = p["@id"];
   delete p["@id"];
   return {
     model: p,
     children: [icon],
+    commands: {
+      click: click
+    },
     styleController: require('./styles'),
     view: 'list-item'
   }
 })
-
 
 people = people.map(function(p) {
   return PersonUI(p).state;
